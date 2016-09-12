@@ -3,20 +3,24 @@ from Competition import competition
 
 if __name__ == '__main__':
     comp = competition()
+    top_clubs = ["Manchester United","Barcelona"]
+    balanced_clubs = ["Ajax", "PSV"]
+    for club in top_clubs:
+        comp.add_club(top_players_club(club))
 
-    c_1 = top_players_club("Manchester United")
-    c_2 = balanced_club("Barcelona")
-    comp.add_club(c_1)
-    comp.add_club(c_2)
+    for club in balanced_clubs:
+        comp.add_club(balanced_club(club))
 
     for i in range(0,5):
         for club in comp.get_clubs():
-            print club.get_name()
             bid_accepted, player, bid, c_2 = club.check_bids()
             if bid_accepted:
                 c_2.buy_player(player,bid)
                 club.sell_player(player,bid)
+                print club.get_name() + " sold :" + str(player.get_t_price()) + "  to " + c_2.get_name()
+            elif(bid != None) :
+                c_2.set_bid(player,bid,club)
+            club.start_argument(comp.get_clubs())
 
-            c_2 = club.start_argument(comp.get_clubs())
-            comp.add_clubs(club,c_2)
+    comp.show_clubs()
 
