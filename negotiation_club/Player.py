@@ -6,7 +6,7 @@ class player():
         self.name = ""
         self.att = randint(1,9)
         self.deff = randint(1,9)
-        self.t_price = (self.att+self.deff)*uniform(0.75,1.25)
+        self.t_price = (self.att+self.deff)*uniform(0.9,1.1)
 
     def get_att(self):
         return self.att
