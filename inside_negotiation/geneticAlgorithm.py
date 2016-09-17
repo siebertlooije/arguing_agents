@@ -1,11 +1,31 @@
 truncation_value = 80
 
+def single_crossover(parent_1, parent_2):
+
+	n = 3	#Bits to exchange
+
+	parent_1 = ''.join(str(e) for e in parent_1)
+	parent_2 = ''.join(str(e) for e in parent_2)
+		
+	cross_over_1_1 = parent_1[:n]
+	cross_over_1_2 = parent_2[:n]
+
+	child1 = parent_1.replace(parent_1[:n], cross_over_1_2)
+	child2 = parent_2.replace(parent_2[:n], cross_over_1_1)
+
+	return child1, child2
+
 def create_next_generation(pool):
 
+	new_generation = []
 	individual_chromosomes = [item[0] for item in pool]
-	
-	for i in individual_chromosomes:
-		print(i)
+
+	for i in xrange(0, len(individual_chromosomes)-1):
+		child_1, child_2 = single_crossover(individual_chromosomes[i], individual_chromosomes[i+1])
+		new_generation.append(child_1)
+		new_generation.append(child_2)
+
+	return new_generation
 
 def filter_set(population):
 
@@ -47,4 +67,5 @@ def prepare_set(solution_set):
 
 	filtered_set = filter_set(sorted_pool)
 
-	create_next_generation(filtered_set)
+	new_generation = create_next_generation(filtered_set)
+	print (new_generation)
