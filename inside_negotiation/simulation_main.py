@@ -9,4 +9,5 @@ if __name__ == '__main__':
 	chromosomes_set = create_pool()
 	scores = []
 
-	s = prepare_set(chromosomes_set)
+	ready_set = prepare_set(chromosomes_set)
+	

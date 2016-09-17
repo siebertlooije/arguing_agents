@@ -1,3 +1,18 @@
+truncation_value = 80
+
+def create_next_generation(pool):
+
+	individual_chromosomes = [item[0] for item in pool]
+	
+	for i in individual_chromosomes:
+		print(i)
+
+def filter_set(population):
+
+	percentage_to_keep = (len(population)*truncation_value)/100
+	new_set = population[-percentage_to_keep:]
+
+	return new_set
 
 def compute_score(chromo):
 
@@ -22,7 +37,7 @@ def prepare_set(solution_set):
 	scores = []
 	agents = []
 
-	for i in n:
+	for i in solution_set:
 		score = compute_score(i)
 		scores.append(score)
 		agents.append(i)
@@ -30,4 +45,6 @@ def prepare_set(solution_set):
 	agents_pool = zip(agents,scores)
 	sorted_pool = sorted(agents_pool,key = lambda t: t[1], reverse = True)
 
-	print(sorted_pool)
+	filtered_set = filter_set(sorted_pool)
+
+	create_next_generation(filtered_set)
