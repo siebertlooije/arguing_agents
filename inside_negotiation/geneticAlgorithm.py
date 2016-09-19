@@ -4,28 +4,19 @@ truncation_value = 80
 
 def single_crossover(parent_1, parent_2):
 
-	n = 3	#Bits to exchange that can have an impact on 
+	n = 6	#Bits to exchange that can have an impact on 
 			#every part of the Chromosome ---> They all 
 			#attack eachother
 
 	parent_1 = ''.join(str(e) for e in parent_1)
 	parent_2 = ''.join(str(e) for e in parent_2)
 		
-	for i in xrange(0,n):
+	cross_over_1_1 = parent_1[:n]
+	cross_over_1_2 = parent_2[:n]
 
-		bit_to_replace = random.randint(0,len(parent_1)-1)
-		#print "Bit to replace", bit_to_replace
+	child1 = parent_1.replace(parent_1[:n], cross_over_1_2)
+	child2 = parent_2.replace(parent_2[:n], cross_over_1_1)
 
-		cross_over_1_1 = parent_1[bit_to_replace]
-		cross_over_1_2 = parent_2[bit_to_replace]
-
-		child1 = parent_1.replace(parent_1[bit_to_replace], cross_over_1_2)
-		child2 = parent_2.replace(parent_2[bit_to_replace], cross_over_1_1)
-
-	#print "End of the breeding"
-	print "Child 1", child1
-	print "Child 2", child2
-	
 	return child1, child2
 
 def create_next_generation(pool):

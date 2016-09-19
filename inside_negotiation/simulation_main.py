@@ -2,15 +2,17 @@ import random
 
 from create_teams import *
 from geneticAlgorithm import *
+from plots import *
 
-n_simulations = 4
+n_simulations = 20
+simulations_vector = []
 
-def score_keeper(scores):
+for i in xrange(0,n_simulations):
+	simulations_vector.append(i)
 
-	global_scores = []
+def score_keeper(s):
+
 	scores = []
-
-	s = [item[1] for item in ready_set]
 
 	for i in s:
 		scores.append(i)
@@ -20,13 +22,11 @@ def score_keeper(scores):
 	for i in scores:
 		tot += i
 
-	final_score = tot/len(scores)
-	global_scores.append(final_score)
-
-	for i in global_scores:
-		print i
-
+	return tot/len(scores)
+	
 if __name__ == '__main__':
+
+	global_scores = []
 	
 	chromosomes_set = create_pool()
 	ready_set = prepare_set(chromosomes_set)
@@ -37,4 +37,10 @@ if __name__ == '__main__':
 
 		new_generation = create_next_generation(ready_set)
 		ready_set =prepare_set(new_generation)
-		#print (new_generation)		
+		print "Processing Generation:",i
+		
+		s = [item[1] for item in ready_set]
+		global_score = score_keeper(s)
+		global_scores.append(global_score)	
+
+	convergence_plot(simulations_vector,global_scores)
