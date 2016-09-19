@@ -23,8 +23,6 @@ class competition():
     def get_clubs(self):
         return self.clubs
 
-
-
     def show_clubs(self):
         for club in self.clubs:
             print "Club name :" + club.get_name() + " budget :" + str(club.get_budget())
