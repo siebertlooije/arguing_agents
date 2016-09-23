@@ -17,3 +17,8 @@ class player():
     def get_t_price(self):
         return self.t_price
 
+    def set_t_price(self, t_price):
+        self.t_price = t_price
+
+    def get_sum_all_attribute(self):
+        return self.deff + self.att

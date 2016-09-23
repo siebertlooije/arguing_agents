@@ -2,18 +2,36 @@ from random import randint, uniform
 from Player import player
 
 class club() :
-
     def __init__ (self, name):
         self.budget = 10*randint(1,9)
         self.n_players = 15
         self.players = []
         self.bids = {}
+        self.counter_bids = {}
         self.name = name
         self.clubs = []
+        self.rewards = {"Sell": 1, "Buy": 1, "Low_players" : -10, "Low_budget" : -5}
+        self.states =  {"Low_players": False, "Low_budget" : False}
 
         for i in range(0,self.n_players):
             p = player()
             self.players.append(p)
+
+
+    def update_state(self, state, key):
+        self.states[key] = state;
+
+    def get_state(self, key):
+        return self.states[key];
+
+    def update_rewards(self, reward, key):
+        self.rewards[key] = reward
+
+    def get_rewards(self):
+        return self.rewards
+
+    def get_reward(self, key):
+        return self.rewards[key]
 
     def find_better_players(self, c):
         p = self.find_weakest_player()
@@ -33,20 +51,26 @@ class club() :
         players.sort(key=lambda player:player.get_t_price(), reverse=True)
         return players
 
-
-
     def check_bids(self):
-        for player,bid in self.bids.iteritems():
+        if(len(self.bids) > 0):
+            player_club, bid = self.bids.items()[0]
+            index = player_club[0]
+            club = player_club[1]
+            player = club.get_players()[index]
 
             if (self.n_players < 14):
-                return False,None,None,None
+                print "Can't sell anymore, got too low players"
+                self.update_state(True,"Low_players")
+                return
 
-            if(bid[0] >= player.get_t_price()):
-                return True, player,bid[0],bid[1]
-            else: #Counter bid
-                return False, player,bid[0] * uniform(1.1,1.3), bid[1]
-
-        return False, None,None,None
+            if(bid >= player.get_t_price()):
+                club.buy_player(index,bid, self)
+                self.sell_player(index,bid)
+            else :
+                print "Bid is too low"
+            #else: #Counter bid
+                #self.bids.pop(player,None)
+                #return False, player,bid[0] * uniform(1.1,1.3), bid[1]
 
     def find_weakest_player(self):
         weakest_player = None
@@ -61,16 +85,24 @@ class club() :
         return weakest_player
 
 
-    def sell_player(self, player, bid):
-        self.players.remove(player)
+    def sell_player(self, index, bid):
+        self.players.pop(index)
         self.n_players -= 1
         self.budget += bid
-        self.bids.pop(player)
+        print self.get_name() + " sold :" + str(bid)
 
-    def buy_player(self,player,bid):
-        self.players.append(player)
+    def buy_player(self,index, bid, club):
+        self.players.append(club.get_players()[index])
         self.n_players += 1
         self.budget -= bid
+        print self.get_name() + " buyed :" + str(bid)
+
+    def get_counter_bids(self):
+        return self.counter_bids
+
+    def set_counter_bids(self, bid, player, club):
+        self.counter_bids[player] = [bid, club]
+        print self.name + " received bid : " + str(bid) + " from " + club.get_name()
 
     def get_players(self):
         return self.players
@@ -78,9 +110,18 @@ class club() :
     def get_bids(self):
         return self.bids
 
-    def set_bid(self, player, bid, club):
-        bid = bid * uniform(0.8,1.2)
-        self.bids[player] = [bid,club]
+    def set_bid(self, index, club, counter):
+        bid = club.get_players()[index].get_t_price()
+        if counter:
+            bid = bid * uniform(1.0,1.5)
+        else:
+            bid = bid * uniform(0.5,1.5)
+        club.get_bids()[index,self] = bid
+
+        if(counter) :
+            print self.get_name() + " did counter bid :" + str(bid) + "  to " + club.get_name()
+        else :
+            print self.get_name() + "  did bid :" + str(bid) + "  to   " + str(club.name)
 
     def get_name(self):
         return self.name
@@ -101,66 +142,21 @@ class club() :
 
         return sum
 
+    def start_argument(self, clubs):
 
-
-class top_players_club(club):
-
-    def __init__(self, name):
-        club.__init__(self, name)
-
-    def start_argument(self,comp):
-        best_player = None;
-        value_best_player = 0;
-        best_club = None;
-        for c_2 in comp:
-            if(c_2 == self):
-                continue
-            c_2_players = self.find_better_players(c_2)
-            c_2_players = self.sort_player_on_price(c_2_players)
-
-            if(len(c_2_players)==0):
+        while(True):
+            club = clubs[randint(0,len(clubs) - 1)]
+            if(club == self):
                 continue;
 
-            i = 0
-            while (i < len(c_2_players)):
-                if (c_2_players[i].get_t_price() < self.budget and c_2_players[i].get_t_price() > value_best_player):
-                    best_player = c_2_players[i]
-                    value_best_player = c_2_players[i].get_t_price()
-                    best_club = c_2;
-                    break;
-                i += 1
-        if(best_player != None):
-            best_club.set_bid(best_player, value_best_player,self)
+            player_index = randint(0,club.get_n_players() - 1)
+
+            if(club.get_n_players()[player_index].get_t_price() > self.get_budget()):
+                self.update_state(True,"Low_budget");
+            else:
+                self.set_bid(player_index,club, False);
+            break;
 
 
 
-class balanced_club(club):
-    def __init__(self, name):
-        club.__init__(self, name)
 
-
-    def start_argument(self,comp):
-        best_player = None;
-        value_best_player = 0;
-        best_club = None;
-        for c_2 in comp:
-            if(c_2 == self):
-                continue
-            c_2_players = self.find_better_players(c_2)
-            c_2_players = self.sort_player_on_price(c_2_players)
-
-
-            if(len(c_2_players)==0):
-                continue;
-
-            i = len(c_2_players)-1
-
-            while (i < len(c_2_players)):
-                if (c_2_players[i].get_t_price() < self.budget and c_2_players[i].get_t_price() > value_best_player):
-                    best_player = c_2_players[i]
-                    value_best_player = c_2_players[i].get_t_price()
-                    best_club = c_2;
-                    break;
-                i -= 1
-        if(best_player != None):
-            best_club.set_bid(best_player, value_best_player, self)
