@@ -12,21 +12,30 @@ argument that we want to simulate
 truncation_value = 80
 
 def single_crossover(parent_1, parent_2): #FIXME it works but not correctly, busy coding the newest version of the GenAl
+	
+
+	print "Chromo", parent_1
 
 	n = 10	#Bits to exchange that can have an impact on 
 			#every part of the Chromosome ---> They all 
 			#attack eachother
 
-	parent_1 = ''.join(str(e) for e in parent_1)
-	parent_2 = ''.join(str(e) for e in parent_2)
+	parent_1 = list(parent_1)
+	parent_2 = list(parent_2)
 		
-	cross_over_1_1 = parent_1[:n]
-	cross_over_1_2 = parent_2[:n]
+	for i in xrange(0,n):
+		pos_1 = random.randint(0, len(parent_1)-1)
+		replacer = int(parent_2[pos_1])
+		
+		#print parent_2[replacer]
+		parent_1[pos_1] = parent_2[replacer]
+		
+		child1 = ''.join(parent_1)
 
-	child1 = parent_1.replace(parent_1[:n], cross_over_1_2)
-	child2 = parent_2.replace(parent_2[:n], cross_over_1_1)
+	print "Child ", child1
 
-	return child1, child2
+
+	return child1 #,child2
 
 def create_next_generation(pool):	#New Generation of Agents is computed
 
@@ -34,9 +43,9 @@ def create_next_generation(pool):	#New Generation of Agents is computed
 	individual_chromosomes = [item[0] for item in pool]
 
 	for i in xrange(0, len(individual_chromosomes)-1):
-		child_1, child_2 = single_crossover(individual_chromosomes[i], individual_chromosomes[i+1])
+		child_1 = single_crossover(individual_chromosomes[i], individual_chromosomes[i+1])	#FIXME aggiungi il secondo figlio
 		new_generation.append(child_1)
-		new_generation.append(child_2)
+		#new_generation.append(child_2)
 
 	return new_generation
 

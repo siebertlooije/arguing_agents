@@ -7,7 +7,7 @@ from create_teams import *
 from geneticAlgorithm import *
 from plots import *
 
-n_simulations = 20
+n_simulations = 5
 simulations_vector = []
 
 for i in xrange(0,n_simulations):
