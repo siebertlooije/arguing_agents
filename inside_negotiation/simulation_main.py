@@ -1,3 +1,6 @@
+"""Main Function that runs the whole simulation process"""
+"""TODO make classes out of all these scripts"""
+
 import random
 
 from create_teams import *
@@ -43,4 +46,7 @@ if __name__ == '__main__':
 		global_score = score_keeper(s)
 		global_scores.append(global_score)	
 
+	for i in global_scores:
+		print(i)
+		
 	convergence_plot(simulations_vector,global_scores)

@@ -1,10 +1,19 @@
 import random
 
+"""The Genetic Algorithm is seen as the way the agents exchange
+part of their knowledge in the format of bits in order to satisfy
+a f(x) = agreement (the idea is to get a chromosome with only ones)
+Right now only one particular tyoe if Agent is created that can be 
+changed on every bit, however we will represent mulitple ones where only 
+part of their structure can be modified according to the type of abstract
+argument that we want to simulate
+"""
+
 truncation_value = 80
 
-def single_crossover(parent_1, parent_2):
+def single_crossover(parent_1, parent_2): #FIXME it works but not correctly, busy coding the newest version of the GenAl
 
-	n = 6	#Bits to exchange that can have an impact on 
+	n = 10	#Bits to exchange that can have an impact on 
 			#every part of the Chromosome ---> They all 
 			#attack eachother
 
@@ -19,7 +28,7 @@ def single_crossover(parent_1, parent_2):
 
 	return child1, child2
 
-def create_next_generation(pool):
+def create_next_generation(pool):	#New Generation of Agents is computed
 
 	new_generation = []
 	individual_chromosomes = [item[0] for item in pool]
@@ -31,14 +40,14 @@ def create_next_generation(pool):
 
 	return new_generation
 
-def filter_set(population):
+def filter_set(population): 	#We keep only the fittest Agents fot simulation+1
 
 	percentage_to_keep = (len(population)*truncation_value)/100
 	new_set = population[-percentage_to_keep:]
 
 	return new_set
 
-def compute_score(chromo):
+def compute_score(chromo):	#Preparation of the pool
 
 	president_score = chromo[0:8]
 	captain_score = chromo[8:16]
@@ -56,7 +65,7 @@ def compute_score(chromo):
 
 	return chromosome_score
 
-def prepare_set(solution_set):
+def prepare_set(solution_set):	#Preparation of the pool
 
 	scores = []
 	agents = []
