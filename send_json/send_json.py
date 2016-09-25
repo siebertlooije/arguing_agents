@@ -8,8 +8,6 @@ class set_json():
         with open('../javascript/state', 'w') as outfile:
             json.dump(data, outfile)
 
-
-
     def make_data(self, node_size):
         data = {};
         nodes = []

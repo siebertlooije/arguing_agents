@@ -20,5 +20,5 @@ class player():
     def set_t_price(self, t_price):
         self.t_price = t_price
 
-    def get_sum_all_attribute(self):
+    def get_stats(self):
         return self.deff + self.att

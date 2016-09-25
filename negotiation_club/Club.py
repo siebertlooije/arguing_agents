@@ -10,13 +10,21 @@ class club() :
         self.counter_bids = {}
         self.name = name
         self.clubs = []
-        self.rewards = {"Sell": 1, "Buy": 1, "Low_players" : -10, "Low_budget" : -5}
-        self.states =  {"Low_players": False, "Low_budget" : False}
+        self.previous_reward = 0;
+
 
         for i in range(0,self.n_players):
             p = player()
             self.players.append(p)
 
+    def set_previous_reward(self,prev_reward):
+        self.previous_reward += prev_reward;
+
+    def get_previous_reward(self):
+        return self.previous_reward;
+
+    def remove_all_players(self):
+        self.players = [];
 
     def update_state(self, state, key):
         self.states[key] = state;
@@ -33,18 +41,14 @@ class club() :
     def get_reward(self, key):
         return self.rewards[key]
 
+
+    def find_best_player(self):
+        return self.sort_player_on_price(self.players)[0]
+
     def find_better_players(self, c):
-        p = self.find_weakest_player()
-        p_stats = p.get_att() + p.get_deff()
-        p_possible_players = []
-
-        for p_2 in c.get_players():
-            p_2_stats = p_2.get_att() + p_2.get_deff()
-
-            if(p_2_stats> p_stats):
-                p_possible_players.append(p_2)
-
-        return p_possible_players
+        while(c.find_best_player().get_stats() > self.find_weakest_player().get_stats() and c.find_best_player() not in self.players) :
+            self.players.remove(self.find_weakest_player())
+            self.players.append(c.find_best_player())
 
 
     def sort_player_on_price(self, players):
@@ -59,15 +63,14 @@ class club() :
             player = club.get_players()[index]
 
             if (self.n_players < 14):
-                print "Can't sell anymore, got too low players"
-                self.update_state(True,"Low_players")
+                print "{} :Can't sell anymore, got too low players".format(club.get_name())
                 return
 
             if(bid >= player.get_t_price()):
                 club.buy_player(index,bid, self)
                 self.sell_player(index,bid)
             else :
-                print "Bid is too low"
+                print "{} : Bid of {} is too low".format(self.get_name(),club.get_name())
             #else: #Counter bid
                 #self.bids.pop(player,None)
                 #return False, player,bid[0] * uniform(1.1,1.3), bid[1]
@@ -89,13 +92,13 @@ class club() :
         self.players.pop(index)
         self.n_players -= 1
         self.budget += bid
-        print self.get_name() + " sold :" + str(bid)
+        print self.get_name() + " sold player with price:" + str(bid)
 
     def buy_player(self,index, bid, club):
         self.players.append(club.get_players()[index])
         self.n_players += 1
         self.budget -= bid
-        print self.get_name() + " buyed :" + str(bid)
+        print self.get_name() + " buyed player with price :" + str(bid)
 
     def get_counter_bids(self):
         return self.counter_bids
@@ -142,21 +145,50 @@ class club() :
 
         return sum
 
-    def start_argument(self, clubs):
+    def get_team_attributes(self):
+        sum = 0
+        for player in self.players:
+            sum += player.get_stats()
+        return sum
 
+
+    def calculate_reward(self, player):
+        n_players = len(self.get_players())
+
+        alpha = float(player.get_stats() - self.get_team_attributes()/n_players)
+        return (0.9*alpha + 0.1*1) if player.get_t_price() < self.budget else -50
+
+    def start_argument(self, comp):
+        clubs = comp.get_clubs()
+        counter = 0;
         while(True):
             club = clubs[randint(0,len(clubs) - 1)]
+
             if(club == self):
                 continue;
 
+
             player_index = randint(0,club.get_n_players() - 1)
+            player = club.get_players()[player_index]
+            if(self.calculate_reward(player) < self.previous_reward):
+                print "{} : I have learned to better not buy this player".format(self.get_name())
+                counter += 1;
+                if (counter == 5):
+                    self.set_previous_reward(-10)
+                    break;
 
-            if(club.get_n_players()[player_index].get_t_price() > self.get_budget()):
-                self.update_state(True,"Low_budget");
-            else:
+                continue;
+
+            if(player.get_t_price() < self.get_budget()):
                 self.set_bid(player_index,club, False);
-            break;
+                self.set_previous_reward(self.calculate_reward(player))
+                break;
+            else :
+                print " {} : Not have enough money to buy player of price :{}".format(self.get_name(),player.get_t_price())
+                self.set_previous_reward(self.calculate_reward(player))
+                counter += 1
+                if (counter == 5):
+                    break;
 
-
-
+                continue;
 

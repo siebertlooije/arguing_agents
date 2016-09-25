@@ -8,12 +8,25 @@ if __name__ == '__main__':
     top_clubs = ["Manchester United"]
     balanced_clubs = ["Ajax"]
 #    for club in top_clubs:
- #       comp.add_club(top_players_club(club))
+#       comp.add_club(top_players_club(club))
 
 #    for club in balanced_clubs:
- #       comp.add_club(balanced_club(club))
+#       comp.add_club(balanced_club(club))
     comp.add_club(club("ajax"));
     comp.add_club(club("manchester"));
+
+    #comp.find_optimal_team()
+    comp.show_clubs()
+    for i in range(0,10):
+        for club in comp.get_clubs():
+            print "-------- begin {} round --------------".format(club.get_name())
+            club.start_argument(comp)
+            print "reward :{}".format(club.get_previous_reward())
+            club.check_bids()
+            print "----------end {} round -------------".format(club.get_name())
+
+    comp.show_clubs()
+    """
     for i in range(0,10):
         for club in comp.get_clubs():
 
@@ -32,5 +45,5 @@ if __name__ == '__main__':
             #    c_2.set_counter_bids(bid, player, club)
 
             print "-----------------------------\n"
-    comp.show_clubs()
 
+    """
