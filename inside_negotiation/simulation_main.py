@@ -1,9 +1,8 @@
 """Main Function that runs the whole simulation process"""
-"""TODO make classes out of all these scripts"""
 
 import random
 
-from create_teams import *
+from create_uniform_agents import *
 from geneticAlgorithm import *
 from plots import *
 
@@ -34,14 +33,25 @@ if __name__ == '__main__':
 	chromosomes_set = create_pool()
 	ready_set = prepare_set(chromosomes_set)
 	
-	for i in xrange(0,n_simulations):
 
-		new_generation = create_next_generation(ready_set)
-		ready_set =prepare_set(new_generation)
-		print "Processing Generation:",i
-		
-		s = [item[1] for item in ready_set]
-		global_score = score_keeper(s)
-		global_scores.append(global_score)	
+	print "---------------------------------------------------------------"
+	print "Which team do you want to simulate the negotiation process on?"
+	print "---------------------------------------------------------------"
+	print "1: Equally distributed members"
+	print "2: Second Option"
+	print "---------------------------------------------------------------"
+	answer = raw_input("Your Choice:")
 
-	convergence_plot(simulations_vector,global_scores)
+	if answer == "1":
+
+		for i in xrange(0,n_simulations):
+
+			new_generation = create_next_generation(ready_set)
+			ready_set =prepare_set(new_generation)
+			print "Processing Generation:",i
+			
+			s = [item[1] for item in ready_set]
+			global_score = score_keeper(s)
+			global_scores.append(global_score)	
+
+		convergence_plot(simulations_vector,global_scores)
