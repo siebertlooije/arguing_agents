@@ -2,7 +2,7 @@ import random
 
 """The Genetic Algorithm is seen as the way the agents exchange
 part of their knowledge in the format of bits in order to satisfy
-a f(x) = agreement (the idea is to get a chromosome with only ones)
+a f(x) = agreement (the idea is to get a chromosome with only 0s)
 Right now only one particular tyoe if Agent is created that can be 
 changed on every bit, however we will represent mulitple ones where only 
 part of their structure can be modified according to the type of abstract
@@ -11,31 +11,54 @@ argument that we want to simulate
 
 truncation_value = 80
 
-def single_crossover(parent_1, parent_2): #FIXME it works but not correctly, busy coding the newest version of the GenAl
-	
-
-	print "Chromo", parent_1
+def single_crossover(parent_1, parent_2): 
 
 	n = 10	#Bits to exchange that can have an impact on 
 			#every part of the Chromosome ---> They all 
 			#attack eachother
 
-	parent_1 = list(parent_1)
-	parent_2 = list(parent_2)
-		
+	c1 = list(parent_1)
+	c2 = list(parent_2)
+
 	for i in xrange(0,n):
-		pos_1 = random.randint(0, len(parent_1)-1)
-		replacer = int(parent_2[pos_1])
+		replace = random.randint(0,len(c1)-1)
+		val = c2[replace]
+		c1[replace] = val
 		
-		#print parent_2[replacer]
-		parent_1[pos_1] = parent_2[replacer]
+	child1 = c1
+
+	for i in xrange(0,n):
+		replace = random.randint(0,len(c2)-1)
+		val = c1[replace]
+		c2[replace] = val
 		
-		child1 = ''.join(parent_1)
+	child1 = ''.join(c1)
+	child2 = ''.join(c2)
 
-	print "Child ", child1
+	return child1, child2
 
+def random_mutation(generation):	#1% mutation rate
+	
+	index = random.randrange(len(generation))
+	gene_to_mutate = generation[index]
 
-	return child1 #,child2
+	list_gene_to_mutate = list(gene_to_mutate)
+
+	index = random.randint(0,len(list_gene_to_mutate)-1)
+		
+	for i, j in enumerate(list_gene_to_mutate):
+		if i == index:
+			if j == "0":
+				list_gene_to_mutate[i] = 1
+			elif j == "1":
+				list_gene_to_mutate[i] = 0
+			else:
+				raise Exception("Chromosome is not supported!")
+		
+	mutated_gen = ''.join(str(e) for e in list_gene_to_mutate)
+	generation[index] = mutated_gen
+	
+	return generation
 
 def create_next_generation(pool):	#New Generation of Agents is computed
 
@@ -43,11 +66,13 @@ def create_next_generation(pool):	#New Generation of Agents is computed
 	individual_chromosomes = [item[0] for item in pool]
 
 	for i in xrange(0, len(individual_chromosomes)-1):
-		child_1 = single_crossover(individual_chromosomes[i], individual_chromosomes[i+1])	#FIXME aggiungi il secondo figlio
+		child_1, child_2 = single_crossover(individual_chromosomes[i], individual_chromosomes[i+1])
 		new_generation.append(child_1)
-		#new_generation.append(child_2)
+		new_generation.append(child_2)
 
-	return new_generation
+	final_generation = random_mutation(new_generation)
+
+	return final_generation
 
 def filter_set(population): 	#We keep only the fittest Agents fot simulation+1
 

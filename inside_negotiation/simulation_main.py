@@ -7,7 +7,7 @@ from create_teams import *
 from geneticAlgorithm import *
 from plots import *
 
-n_simulations = 5
+n_simulations = 20
 simulations_vector = []
 
 for i in xrange(0,n_simulations):
@@ -34,8 +34,6 @@ if __name__ == '__main__':
 	chromosomes_set = create_pool()
 	ready_set = prepare_set(chromosomes_set)
 	
-	print "First Generation of Agents", ready_set
-
 	for i in xrange(0,n_simulations):
 
 		new_generation = create_next_generation(ready_set)
@@ -46,7 +44,4 @@ if __name__ == '__main__':
 		global_score = score_keeper(s)
 		global_scores.append(global_score)	
 
-	for i in global_scores:
-		print(i)
-		
 	convergence_plot(simulations_vector,global_scores)
