@@ -37,15 +37,14 @@ if __name__ == '__main__':
 	print "Which team do you want to simulate the negotiation process on?"
 	print "---------------------------------------------------------------"
 	print "1: Equally distributed members"
-	print "2: Second Option"
+	print "2: President, CEO and Trainer negotiate"
 	print "---------------------------------------------------------------"
 	answer = raw_input("Your Choice:	")
 
 	if answer == "1":
-
 		for i in xrange(0,n_simulations):
 
-			new_generation = create_next_generation(ready_set)
+			new_generation = create_next_generation(answer, ready_set)
 			ready_set = prepare_set(new_generation)
 			print "Processing Generation:",i
 			
@@ -54,4 +53,18 @@ if __name__ == '__main__':
 			global_scores.append(global_score)	
 
 		save_Uniform_results(simulations_vector,global_scores)
+		convergence_plot(simulations_vector,global_scores)
+
+	elif answer == "2":
+		for i in xrange(0,n_simulations):
+
+			new_generation = create_next_generation(answer, ready_set)
+			ready_set = prepare_set(new_generation)
+			print "Processing Generation:",i
+			
+			s = [item[1] for item in ready_set]
+			global_score = score_keeper(s)
+			global_scores.append(global_score)	
+
+		save_PCT_results(simulations_vector,global_scores)
 		convergence_plot(simulations_vector,global_scores)
