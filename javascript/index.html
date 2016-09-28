@@ -7,20 +7,6 @@
   <script src="kripke.js"></script>
   <link href="vis.css" rel="stylesheet" type="text/css">
 
-  <script>
-    function update()
-    {
-      var request = new XMLHttpRequest();
-      request.open('GET', '/state', true);
-      request.onreadystatechange = function(){
-        if (request.readyState == 4) {
-          drawGraph(JSON.parse(request.responeText));
-        }
-      };
-      request.send();
-    }
-  </script>
-
   <style type="text/css">
     #mynetwork
     {
@@ -33,7 +19,7 @@
 <body>
 <div id="mynetwork"></div>
 
-<button type = "button" id="graph" onclick=make_graph()>View graph</button>
+<button type = "button" id="graph" onclick=update()>View graph</button>
 </div>
 </body>
 </html>
