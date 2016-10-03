@@ -1,8 +1,6 @@
-from Balanced_club import balanced_club
-from Top_players_club import top_players_club;
 from Club import club
 from Competition import competition
-from Graph_visualizer import graph_visualizer
+from TransferList import transfer_list
 
 if __name__ == '__main__':
     comp = competition()
@@ -16,8 +14,10 @@ if __name__ == '__main__':
     comp.add_club(club("ajax"));
     comp.add_club(club("manchester"));
     comp.add_club(club("feyenoord"))
+    comp.init_transfer_list()
     #comp.find_optimal_team()
     comp.show_clubs()
+    comp.show_transfer_list()
 
     for i in range(0,10):
         comp.visualizer.clean_up_arguments()

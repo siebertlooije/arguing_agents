@@ -65,20 +65,17 @@ class club() :
 
             if (self.n_players < 14):
                 print "{} :Can't sell anymore, got too low players".format(club.get_name())
-                comp.visualizer.format_arguments(self,club,player,"Have too few players")
+                comp.visualizer.format_arguments(self,club,player,"Have too few players", 'red')
                 comp.visualizer.remove_arguments(club,self,player,"Bid")
                 return
 
             if(bid >= player.get_t_price()):
                 club.buy_player(index,bid, self)
                 self.sell_player(index,bid)
-                comp.visualizer.format_arguments(self,club,player,"Sell")
-                comp.visualizer.format_arguments(club,self,player,"Buy")
-                comp.visualizer.remove_arguments(club,self,player,"Bid")
+                comp.visualizer.format_arguments(self,club,player,"Sell" ,'green')
             else :
                 print "{} : Bid of {} is too low".format(self.get_name(),club.get_name())
-                comp.visualizer.format_arguments(self,club,player,"Bid too low")
-                comp.visualizer.remove_arguments(club,self,player,"Bid")
+                comp.visualizer.format_arguments(self,club,player,"Bid too low", 'red')
             #else: #Counter bid
                 #self.bids.pop(player,None)
                 #return False, player,bid[0] * uniform(1.1,1.3), bid[1]
@@ -94,7 +91,6 @@ class club() :
                 weakest_player = player
 
         return weakest_player
-
 
     def sell_player(self, index, bid):
         self.players.pop(index)
@@ -190,7 +186,7 @@ class club() :
             if(player.get_t_price() < self.get_budget()):
                 self.set_bid(player_index,club, False);
 
-                comp.visualizer.format_arguments(self,club, club.get_players()[player_index], "Bid")
+                comp.visualizer.format_arguments(self,club, club.get_players()[player_index], "Bid" , 'green')
 
                 self.set_previous_reward(self.calculate_reward(player))
                 break;

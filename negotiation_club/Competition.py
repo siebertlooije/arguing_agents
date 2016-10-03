@@ -1,6 +1,8 @@
 import Club;
 from Graph_visualizer import graph_visualizer
 import csv
+from TransferList import transfer_list
+from Player import player
 
 class competition():
     def __init__(self):
@@ -8,6 +10,7 @@ class competition():
         self.opt_club = Club.club("optimal");
         self.visualizer = graph_visualizer()
         self.player_names = self.read_in_names()
+        self.transfer_list = transfer_list();
 
     def add_club(self, club):
         if club in self.clubs:
@@ -32,6 +35,11 @@ class competition():
                 player_names.append(row[1])
         return player_names
 
+    def init_transfer_list(self):
+        for index in range(len(self.clubs) * (15), len(self.player_names)):
+            p = player()
+            p.set_name(self.player_names[index])
+            self.transfer_list.get_players().append(p)
 
 
     def get_opt_club(self):
@@ -57,13 +65,16 @@ class competition():
             print "Total team value :" + str(club.get_team_value())
             self.visualizer.visualize_clubs(self.clubs)
 
+    def show_transfer_list(self):
+        print "--------- Transfer List ----------"
+        for player in self.transfer_list.get_players():
+            print "player name :{} player value :{}".format(player.get_name(), player.get_t_price())
+
     def show_club(self, club):
         print "Club name :" + club.get_name() + " budget :" + str(club.get_budget())
         for player in club.get_players():
             print "player value :" +  str(player.get_t_price()) + " att :" + str(player.get_att()) + " deff :" + str(player.get_deff())
         print "Total team value :" + str(club.get_team_value())
-
-
 
 
     def find_optimal_team(self):
