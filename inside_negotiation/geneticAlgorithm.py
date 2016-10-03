@@ -11,7 +11,12 @@ argument that we want to simulate
 
 truncation_value = 80
 
-def single_crossover(parent_1, parent_2): 
+def PTC_crossover(parent_1, parent_2):	#Only President, Trainer and CEO have an impact on the negotiation process
+
+	n = 8
+
+
+def Uniform_single_crossover(parent_1, parent_2): 
 
 	n = 10	#Bits to exchange that can have an impact on 
 			#every part of the Chromosome ---> They all 
@@ -60,17 +65,25 @@ def random_mutation(generation):	#1% mutation rate
 	
 	return generation
 
-def create_next_generation(pool):	#New Generation of Agents is computed
+def create_next_generation(answer, pool):	#New Generation of Agents is computed
 
 	new_generation = []
 	individual_chromosomes = [item[0] for item in pool]
 
-	for i in xrange(0, len(individual_chromosomes)-1):
-		child_1, child_2 = single_crossover(individual_chromosomes[i], individual_chromosomes[i+1])
-		new_generation.append(child_1)
-		new_generation.append(child_2)
+	if answer == "1":
 
-	final_generation = random_mutation(new_generation)
+		for i in xrange(0, len(individual_chromosomes)-1):
+			child_1, child_2 = Uniform_single_crossover(individual_chromosomes[i], individual_chromosomes[i+1])
+			new_generation.append(child_1)
+			new_generation.append(child_2)
+
+		final_generation = random_mutation(new_generation)
+
+	elif answer == "2":
+		print "Code the new negotiation process"
+
+	else:
+		raise Exception("The option you chose does not exist!")
 
 	return final_generation
 
