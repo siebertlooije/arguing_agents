@@ -1,6 +1,7 @@
-function update() {
-  var request = new XMLHttpRequest();
-  request.open('GET', '/state', true);
+function update_arguments()
+{
+     var request = new XMLHttpRequest();
+  request.open('GET', '/arguments', true);
   request.onreadystatechange = function()
   {
     if (request.readyState == 4)
@@ -15,13 +16,15 @@ function update() {
 function make_graph(nodes, edges)
 {
   var container = document.getElementById('mynetwork');
-  var data =
-  {
+
+    var data =
+    {
       nodes: new vis.DataSet(nodes),
       edges: new vis.DataSet(edges)
-  };
-  var options =
-  {
+    };
+
+    var options =
+      {
       layout:
       {
           improvedLayout:false,

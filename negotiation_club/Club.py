@@ -1,5 +1,7 @@
 from random import randint, uniform
 from Player import player
+from Graph_visualizer import graph_visualizer
+from Competition import competition
 
 class club() :
     def __init__ (self, name):
@@ -11,7 +13,6 @@ class club() :
         self.name = name
         self.clubs = []
         self.previous_reward = 0;
-
 
         for i in range(0,self.n_players):
             p = player()
@@ -55,22 +56,29 @@ class club() :
         players.sort(key=lambda player:player.get_t_price(), reverse=True)
         return players
 
-    def check_bids(self):
+    def check_bids(self, comp):
         if(len(self.bids) > 0):
             player_club, bid = self.bids.items()[0]
             index = player_club[0]
             club = player_club[1]
-            player = club.get_players()[index]
+            player = self.get_players()[index]
 
             if (self.n_players < 14):
                 print "{} :Can't sell anymore, got too low players".format(club.get_name())
+                comp.visualizer.format_arguments(self,club,player,"Have too few players")
+                comp.visualizer.remove_arguments(club,self,player,"Bid")
                 return
 
             if(bid >= player.get_t_price()):
                 club.buy_player(index,bid, self)
                 self.sell_player(index,bid)
+                comp.visualizer.format_arguments(self,club,player,"Sell")
+                comp.visualizer.format_arguments(club,self,player,"Buy")
+                comp.visualizer.remove_arguments(club,self,player,"Bid")
             else :
                 print "{} : Bid of {} is too low".format(self.get_name(),club.get_name())
+                comp.visualizer.format_arguments(self,club,player,"Bid too low")
+                comp.visualizer.remove_arguments(club,self,player,"Bid")
             #else: #Counter bid
                 #self.bids.pop(player,None)
                 #return False, player,bid[0] * uniform(1.1,1.3), bid[1]
@@ -126,6 +134,7 @@ class club() :
         else :
             print self.get_name() + "  did bid :" + str(bid) + "  to   " + str(club.name)
 
+
     def get_name(self):
         return self.name
 
@@ -167,7 +176,6 @@ class club() :
             if(club == self):
                 continue;
 
-
             player_index = randint(0,club.get_n_players() - 1)
             player = club.get_players()[player_index]
             if(self.calculate_reward(player) < self.previous_reward):
@@ -181,6 +189,9 @@ class club() :
 
             if(player.get_t_price() < self.get_budget()):
                 self.set_bid(player_index,club, False);
+
+                comp.visualizer.format_arguments(self,club, club.get_players()[player_index], "Bid")
+
                 self.set_previous_reward(self.calculate_reward(player))
                 break;
             else :
