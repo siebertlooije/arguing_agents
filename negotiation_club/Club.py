@@ -93,10 +93,11 @@ class club() :
         return weakest_player
 
     def sell_player(self, index, bid):
+
+        print self.get_name() + " sold player "+ self.players[index].get_name() + " with price:" + str(bid)
         self.players.pop(index)
         self.n_players -= 1
         self.budget += bid
-        print self.get_name() + " sold player with price:" + str(bid)
 
     def buy_player(self,index, bid, club):
         self.players.append(club.get_players()[index])
@@ -130,6 +131,11 @@ class club() :
         else :
             print self.get_name() + "  did bid :" + str(bid) + "  to   " + str(club.name)
 
+
+    def player_index(self, player2):
+        for index,player in enumerate(self.players):
+            if player2 == player:
+                return index
 
     def get_name(self):
         return self.name
@@ -172,27 +178,25 @@ class club() :
             if(club == self):
                 continue;
 
-            player_index = randint(0,club.get_n_players() - 1)
-            player = club.get_players()[player_index]
-            if(self.calculate_reward(player) < self.previous_reward):
-                print "{} : I have learned to better not buy this player".format(self.get_name())
-                counter += 1;
-                if (counter == 5):
-                    self.set_previous_reward(-10)
-                    break;
+            weakest_player = self.find_weakest_player()
+            comp.visualizer.format_argument(self,weakest_player,"Weakest player", "yellow")
+            player = club.find_best_player()
+            if (player.get_stats() <= weakest_player.get_stats()):
+                print "Player : {} is not better then weakest player :{}".format(player.get_name(),weakest_player.get_name())
+                return;
 
-                continue;
+            transfer_player =
+
+#            player_index = randint(0,club.get_n_players() - 1)
+            #player = club.get_players()[player_index]
+            player_index = club.player_index(player)
 
             if(player.get_t_price() < self.get_budget()):
                 self.set_bid(player_index,club, False);
-
                 comp.visualizer.format_arguments(self,club, club.get_players()[player_index], "Bid" , 'green')
-
-                self.set_previous_reward(self.calculate_reward(player))
                 break;
             else :
                 print " {} : Not have enough money to buy player of price :{}".format(self.get_name(),player.get_t_price())
-                self.set_previous_reward(self.calculate_reward(player))
                 counter += 1
                 if (counter == 5):
                     break;

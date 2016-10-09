@@ -49,15 +49,48 @@ class graph_visualizer():
                     data['edges'].remove(edge)
                     rem_players.append(edge['to'])
 
+            print "remove (1) players : {}".format(self.players)
             for node in data['nodes']:
                 if node['id'] in rem_players:
+                    print "removed node :{}".format(node)
                     data['nodes'].remove(node)
-                    self.players.pop(node['id'])
+                    if node['id'] in self.players:
+                        self.players.pop(node['id'])
 
+        print "remove (2) players : {}".format(self.players)
         self.dump_json(data)
 
     def check_nodes(self,node, nodes):
         return True if node in nodes else False
+
+
+    def format_argument(self, club1, player, argument_label, color):
+        data = self.load_arguments()
+
+        nodes = data['nodes']
+        edges = data['edges'] if 'edges' in data else []
+        c_id1 = self.clubs.index(club1)
+
+        player_id = self.get_key(self.players,player)
+        if player_id not in self.players:
+            id = len(self.clubs) + len(self.players) + 1
+            print "ID : {}".format(id)
+            dict = {"id": id, "label": "player :" + player.get_name(), 'color': 'blue'}
+            nodes.append(dict)
+            data['nodes'] = nodes
+            self.players[id] = player
+        else:
+            id = player_id
+
+        dict = {"from": c_id1, "to": id, "arrows": 'to', "label": argument_label, 'color': color, 'length': 250,
+                'physics': 'false'}
+        edges.append(dict)
+        data['edges'] = edges
+        print "players : {}".format(self.players)
+        self.dump_json(data, '../javascript/arguments')
+
+
+
 
     def format_arguments(self, club1, club2, player, argument_label, color):
         data = self.load_arguments()
