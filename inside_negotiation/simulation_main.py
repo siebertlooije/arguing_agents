@@ -3,10 +3,11 @@
 import random
 
 from create_uniform_agents import *
+from graph_representations import *
 from geneticAlgorithm import *
 from results import *
 
-n_simulations = 20
+n_simulations = 25
 simulations_vector = []
 
 for i in xrange(0,n_simulations):
@@ -42,6 +43,9 @@ if __name__ == '__main__':
 	answer = raw_input("Your Choice:	")
 
 	if answer == "1":
+
+		Uniform_graph_representation()
+
 		for i in xrange(0,n_simulations):
 
 			new_generation = create_next_generation(answer, ready_set)
@@ -56,6 +60,7 @@ if __name__ == '__main__':
 		convergence_plot(simulations_vector,global_scores)
 
 	elif answer == "2":
+		
 		for i in xrange(0,n_simulations):
 
 			new_generation = create_next_generation(answer, ready_set)

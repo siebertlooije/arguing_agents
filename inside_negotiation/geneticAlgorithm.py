@@ -11,10 +11,39 @@ argument that we want to simulate
 
 truncation_value = 80
 
+"""
 def PTC_crossover(parent_1, parent_2):	#Only President, Trainer and CEO have an impact on the negotiation process
 
-	n = 8
+	n = 10
 
+	p1 = list(parent_1)
+	p2 = list(parent_2)
+
+	knowledge_impact_1 = p1[0:8]+p1[16:32]
+	knowledge_impact_2 = p2[0:8]+p2[16:32]
+
+	no_knowledge_impact = p1[8:16]+p1[32:40]
+
+	for i in xrange(0,n):
+		replace = random.randint(0,len(knowledge_impact_1)-1)
+		val = knowledge_impact_2[replace]
+		knowledge_impact_1[replace] = val
+	
+	c1 = knowledge_impact_1	+ no_knowledge_impact
+
+	for i in xrange(0,n):
+		replace = random.randint(0,len(knowledge_impact_2)-1)
+		val = knowledge_impact_1[replace]
+		knowledge_impact_2[replace] = val
+	
+	c2 = knowledge_impact_2 + no_knowledge_impact		
+
+	child1 = ''.join(c1)
+	child2 = ''.join(c2)
+
+	return child1, child2
+
+"""
 
 def Uniform_single_crossover(parent_1, parent_2): 
 
@@ -80,8 +109,14 @@ def create_next_generation(answer, pool):	#New Generation of Agents is computed
 		final_generation = random_mutation(new_generation)
 
 	elif answer == "2":
-		print "Code the new negotiation process"
+		
+		for i in xrange(0, len(individual_chromosomes)-1):
+			child_1, child_2 = PTC_crossover(individual_chromosomes[i], individual_chromosomes[i+1])
+			new_generation.append(child_1)
+			new_generation.append(child_2)
 
+		final_generation = random_mutation(new_generation)
+		
 	else:
 		raise Exception("The option you chose does not exist!")
 
