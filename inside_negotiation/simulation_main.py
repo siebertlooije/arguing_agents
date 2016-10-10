@@ -90,7 +90,6 @@ if __name__ == '__main__':
 
 					new_generation = create_next_generation("1", ready_set)
 					ready_set = prepare_set(new_generation, "1")
-					print "Processing New Generation:", j
 					
 					s = [item[1] for item in ready_set]
 					global_score = score_keeper(s)
