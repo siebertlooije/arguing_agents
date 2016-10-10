@@ -9,41 +9,33 @@ part of their structure can be modified according to the type of abstract
 argument that we want to simulate
 """
 
-truncation_value = 80
+truncation_value_PTC = 80
+truncation_value_single = 80
 
-"""
 def PTC_crossover(parent_1, parent_2):	#Only President, Trainer and CEO have an impact on the negotiation process
-
-	n = 10
 
 	p1 = list(parent_1)
 	p2 = list(parent_2)
 
-	knowledge_impact_1 = p1[0:8]+p1[16:32]
-	knowledge_impact_2 = p2[0:8]+p2[16:32]
+	knowledge_impact_1_1 = p1[0:8]
+	knowledge_impact_1_2 = p1[16:32]
 
-	no_knowledge_impact = p1[8:16]+p1[32:40]
+	no_knowledge_impact_1_1 = p1[8:16]
+	no_knowledge_impact_1_2 = p1[32:40]
 
-	for i in xrange(0,n):
-		replace = random.randint(0,len(knowledge_impact_1)-1)
-		val = knowledge_impact_2[replace]
-		knowledge_impact_1[replace] = val
+	knowledge_impact_2_1 = p2[0:8]
+	knowledge_impact_2_2 = p2[16:32]
 	
-	c1 = knowledge_impact_1	+ no_knowledge_impact
+	no_knowledge_impact_2_1 = p1[8:16]
+	no_knowledge_impact_2_2 = p1[32:40]
 
-	for i in xrange(0,n):
-		replace = random.randint(0,len(knowledge_impact_2)-1)
-		val = knowledge_impact_1[replace]
-		knowledge_impact_2[replace] = val
-	
-	c2 = knowledge_impact_2 + no_knowledge_impact		
-
+	c1 = knowledge_impact_2_1 + no_knowledge_impact_1_1 + knowledge_impact_2_2 + no_knowledge_impact_1_2
+	c2 = knowledge_impact_1_1 + no_knowledge_impact_2_1 +knowledge_impact_1_2 + no_knowledge_impact_2_2
+		
 	child1 = ''.join(c1)
 	child2 = ''.join(c2)
 
 	return child1, child2
-
-"""
 
 def Uniform_single_crossover(parent_1, parent_2): 
 
@@ -122,9 +114,16 @@ def create_next_generation(answer, pool):	#New Generation of Agents is computed
 
 	return final_generation
 
-def filter_set(population): 	#We keep only the fittest Agents fot simulation+1
+def filter_set_single(population): 	#We keep only the fittest Agents fot simulation+1
 
-	percentage_to_keep = (len(population)*truncation_value)/100
+	percentage_to_keep = (len(population)*truncation_value_single)/100
+	new_set = population[-percentage_to_keep:]
+
+	return new_set
+
+def filter_set_PTC(population): 	#We keep only the fittest Agents fot simulation+1
+
+	percentage_to_keep = (len(population)*truncation_value_PTC)/100
 	new_set = population[-percentage_to_keep:]
 
 	return new_set
@@ -147,7 +146,7 @@ def compute_score(chromo):	#Preparation of the pool
 
 	return chromosome_score
 
-def prepare_set(solution_set):	#Preparation of the pool
+def prepare_set(solution_set, answer):	#Preparation of the pool
 
 	scores = []
 	agents = []
@@ -160,6 +159,11 @@ def prepare_set(solution_set):	#Preparation of the pool
 	agents_pool = zip(agents,scores)
 	sorted_pool = sorted(agents_pool,key = lambda t: t[1], reverse = True)
 
-	filtered_set = filter_set(sorted_pool)
+	if answer == "1":
+		filtered_set = filter_set_single(sorted_pool)
+	elif answer == "2":
+		filtered_set = filter_set_PTC(sorted_pool)
+	else:
+		raise Exception("The option you chose does not exist!")
 
 	return filtered_set
