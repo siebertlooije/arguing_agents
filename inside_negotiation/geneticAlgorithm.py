@@ -11,6 +11,22 @@ argument that we want to simulate
 
 truncation_value_PTC = 80
 truncation_value_single = 80
+truncation_value_final = 90
+
+def Cooperation_crossover(parent_1, parent_2):	#Double Crossover Breeding Technique
+	
+	n = 8 	#Bits to exchange
+
+	cross_over_1_1 = parent_1[:n]
+	cross_over_1_2 = parent_2[:n]
+
+	tmp_1 = parent_1.replace(parent_1[:n], cross_over_1_2)
+	tmp_2 = parent_2.replace(parent_2[:n], cross_over_1_1)
+
+	child_1 = tmp_1.replace(tmp_1[-n:], tmp_2[-n:])
+	child_2 = tmp_2.replace(tmp_2[-n:], tmp_1[-n:])
+
+	return child_1, child_2
 
 def PTC_crossover(parent_1, parent_2):	#Only President, Trainer and CEO have an impact on the negotiation process
 
@@ -108,6 +124,15 @@ def create_next_generation(answer, pool):	#New Generation of Agents is computed
 			new_generation.append(child_2)
 
 		final_generation = random_mutation(new_generation)
+
+	elif answer == "3":
+
+		for i in xrange(0, len(individual_chromosomes)-1):
+			child_1, child_2 = Cooperation_crossover(individual_chromosomes[i], individual_chromosomes[i+1])
+			new_generation.append(child_1)
+			new_generation.append(child_2)
+
+		final_generation = random_mutation(new_generation)
 		
 	else:
 		raise Exception("The option you chose does not exist!")
@@ -124,6 +149,13 @@ def filter_set_single(population): 	#We keep only the fittest Agents fot simulat
 def filter_set_PTC(population): 	#We keep only the fittest Agents fot simulation+1
 
 	percentage_to_keep = (len(population)*truncation_value_PTC)/100
+	new_set = population[-percentage_to_keep:]
+
+	return new_set
+
+def filter_set_Final(population): 	#We keep only the fittest Agents fot simulation+1
+
+	percentage_to_keep = (len(population)*truncation_value_final)/100
 	new_set = population[-percentage_to_keep:]
 
 	return new_set
@@ -163,6 +195,8 @@ def prepare_set(solution_set, answer):	#Preparation of the pool
 		filtered_set = filter_set_single(sorted_pool)
 	elif answer == "2":
 		filtered_set = filter_set_PTC(sorted_pool)
+	elif answer == "3":
+		filtered_set = filter_set_Final(sorted_pool)
 	else:
 		raise Exception("The option you chose does not exist!")
 
