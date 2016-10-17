@@ -1,0 +1,95 @@
+body
+{
+	margin:0px;
+	#background-image:url("../images/b4.jpg");
+	background-size:100%; 
+}
+
+/* headers */
+h1
+{
+	font-size:30px;
+	text-align:center;
+	font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+	color:#006625;
+    margin-top: 5px;
+}
+
+h2
+{
+	font-size:22px;
+	font-family:sans-serif;	
+    margin-top: 20px;
+}
+
+h3
+{
+	font-size:14px;
+	font-family:sans-serif;
+	text-align:center;
+	color:
+}
+
+p
+{
+	font-size:18px;
+	font-family:Times new roman;
+	color:#2A120A;
+	text-align:left;
+	margin:5%;
+}
+
+header
+{
+	text-align:center;
+	padding:0px;
+	margin-top:0px;
+}
+
+/* Positions */
+#section
+{
+	margin:2%;
+	margin-top:100px;
+}
+
+/* encyclopedia layout */
+div.img {
+	margin-top:100px;
+	margin: 3%;
+    padding: 5px;
+    float: left;
+    text-align: center;
+	border: 1px solid #000000;
+	box-shadow: 5px 5px 3px #888888;
+	background-color:#F2F2F2;
+	border-radius: 20px;
+}
+
+div.img img {
+    display: inline;
+    margin: 8px;
+}
+
+/* classes */
+
+.active {
+   /* background-color: #4CAF50; */
+}
+
+select.btn-mini {
+    height: auto;
+    line-height: 14px;
+}
+
+select.btn {
+    -webkit-appearance: button;
+       -moz-appearance: button;
+            appearance: button;
+    padding-right: 16px;
+}
+
+select.btn-mini + .caret {
+    margin-left: -20px;
+    margin-top: 9px;
+}
