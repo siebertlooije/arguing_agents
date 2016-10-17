@@ -16,7 +16,7 @@ window.onload = function()
 
     $("button#buttonnext").on('click',function ()
     {
-        if(index_round_club == competition.length)
+        if(index_round_club == competition.length - 1)
             index_round_club = 0;
 
         round(competition, index_round_club);
@@ -108,6 +108,23 @@ function create_players(name)
    return player;
 }
 
+function create_transferlist(num_clubs, names)
+{
+    var players = []
+    var counter = 0
+    for(var index = num_clubs* 15 ; index !=names.length ; index++)
+    {
+
+        players[counter] = create_players(names[index])
+        counter++
+    }
+    var transfer_list =
+    {
+        name: "transfer list",
+        players:players
+    }
+    return transfer_list
+}
 
 function create_team(team_name, index_team, player_names)
 {
@@ -138,5 +155,6 @@ function make_teams()
     {
         competition[index] = create_team(team_array[index], index, player_names)
     }
+    competition[competition.length] = create_transferlist(competition.length, player_names);
     return competition;
 }

@@ -5,10 +5,17 @@ $(document).ready(function(){
 
 function make_clubs(competition)
 {
-  for (var index = 0; index != competition.length; index++) {
-    var dict = {"id": index, "label": competition[index].name, 'color': 'orange'}
-
-    data.nodes.add(dict)
+  for (var index = 0; index != competition.length; index++)
+  {
+        if(competition[index].name == "transfer list")
+        {
+            var dict = {"id": index, "label": competition[index].name, 'color': 'pink'}
+        }
+        else
+        {
+            var dict = {"id": index, "label": competition[index].name, 'color': 'orange'}
+        }
+        data.nodes.add(dict)
   }
 }
 
@@ -17,11 +24,12 @@ function remove_bid(playername,club2index)
   var player_id = check_player_graph(playername)
   for(var index = 0; index != edges_length; index ++)
   {
-    if(data.edges.get(index).from == player_id && data.edges.get(index).to == club2index)
-    {
-        data.edges.splice(index,1);
-        edges_length++;
-    }
+        console.log(data.edges.get(2))
+        if(data.edges.get(index).from == player_id && data.edges.get(index).to == club2index)
+        {
+            data.edges.splice(index,1);
+            edges_length++;
+        }
   }
 }
 
@@ -57,28 +65,46 @@ function check_player_graph(playername)
   return null
 }
 
-function make_bid(player,club1_index, club2_index, bid)
+function make_bid(player,club1_index, club2_index, bid, inter_president)
 {
-  var player_id = null;
+    var color = "green"
+    if(inter_president)
+        color = "red"
+
+    var player_id = null;
   if(check_player_graph(player.name) == null)
   {
-    var dict = {"id": data.nodes.length,"label": player.name, 'color': 'blue'}
-    player_id = data.nodes.length
-    data.nodes.add(dict)
-    dict = {"id" : edges_length + 1, "from": player_id, "to": club2_index, "arrows": 'to', "label": "player of", 'color': 'grey', 'length': 400}
-    data.edges.add(dict)
+      var dict = {"id": data.nodes.length,"label": player.name, 'color': 'blue'}
+      player_id = data.nodes.length;
+      data.nodes.add(dict)
+      dict = {"id" : edges_length + 1, "from": player_id, "to": club2_index, "arrows": 'to', "label": "player of", 'color': 'grey', 'length': 400}
+      data.edges.add(dict)
       edges_length++
-    dict = {"id" : edges_length + 1,"from": club1_index, "to": player_id, "arrows": 'to', "label": "bid :" + bid.toFixed(2), 'color': 'green', 'length': 400}
-    data.edges.add(dict)
+      dict = {"id" : edges_length + 1,"from": club1_index, "to": player_id, "arrows": 'to', "label": "bid :" + bid.toFixed(2), 'color': color, 'length': 400}
+      data.edges.add(dict)
       edges_length++
   }
   else
   {
-    player_id = check_player_graph(player.name);
-    dict = { "id" : edges_length + 1 , "from": club1_index, "to": player_id, "arrows": 'to', "label": "bid :"+ bid.toFixed(2) , 'color': 'green', 'length': 400}
-    data.edges.add(dict)
+      player_id = check_player_graph(player.name);
+      dict = { "id" : edges_length + 1 , "from": club1_index, "to": player_id, "arrows": 'to', "label": "bid :"+ bid.toFixed(2) , 'color': color, 'length': 400}
+      data.edges.add(dict)
       edges_length ++
   }
+
+  if(inter_president)
+  {
+      var pred_id = data.nodes.length
+      var dict = {"id": pred_id,"label": "president", 'color': 'red'}
+      data.nodes.add(dict);
+      dict = {"id" : edges_length + 1, "from": pred_id, "to": club2_index, "arrows": 'to', "label": "President of", 'color': 'red', 'length': 400}
+      data.edges.add(dict)
+      edges_length++
+      dict = {"id" : edges_length + 1, "from": pred_id, "to": player_id, "arrows": 'to', "label": "Stops bid", 'color': 'red', 'length': 400}
+      data.edges.add(dict)
+      edges_length++
+  }
+
   update_graph()
 }
 
