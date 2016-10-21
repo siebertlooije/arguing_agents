@@ -1,4 +1,4 @@
-import seaborn as sns
+#import seaborn as sns
 from matplotlib import pyplot as plt
 
 def save_Uniform_results(sim, scores):
