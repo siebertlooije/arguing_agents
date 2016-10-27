@@ -1,12 +1,12 @@
 $(function(){ // on dom ready
 
-$('#cy').cytoscape({
+$('#cy2').cytoscape({
   layout: {
     name: 'cose',
     padding: 10,
     randomize: true
   },
-
+  
   style: cytoscape.stylesheet()
     .selector('node')
       .css({
@@ -45,7 +45,7 @@ $('#cy').cytoscape({
         'opacity': 0.25,
         'text-opacity': 0
       }),
-
+  
   elements: {
     nodes: [
       { data: { id: 'President', name: 'President', weight: 70, faveColor: '#6FB1FC', faveShape: 'triangle' } },
@@ -57,35 +57,23 @@ $('#cy').cytoscape({
     edges: [
       { data: { source: 'President', target: 'CEO', faveColor: '#6FB1FC', strength: 80 } },
       { data: { source: 'President', target: 'Trainer', faveColor: '#6FB1FC', strength: 80 } },
-      { data: { source: 'President', target: 'Captain', faveColor: '#6FB1FC', strength: 80 } },
-      { data: { source: 'President', target: 'Supporters', faveColor: '#6FB1FC', strength: 80 } },
-
-      { data: { source: 'Captain', target: 'President', faveColor: '#F5A45D', strength: 80 } },
-      { data: { source: 'Captain', target: 'CEO', faveColor: '#F5A45D', strength: 80 } },
-      { data: { source: 'Captain', target: 'Trainer', faveColor: '#F5A45D', strength: 80 } },
-      { data: { source: 'Captain', target: 'Supporters', faveColor: '#F5A45D', strength: 80 } },
-
-      { data: { source: 'CEO', target: 'President', faveColor: '#EDA1ED', strength: 80 } },
-      { data: { source: 'CEO', target: 'Captain', faveColor: '#EDA1ED', strength: 80 } },
-      { data: { source: 'CEO', target: 'Trainer', faveColor: '#EDA1ED', strength: 80 } },
-      { data: { source: 'CEO', target: 'Supporters', faveColor: '#EDA1ED', strength: 80 } },
-
-      { data: { source: 'Trainer', target: 'CEO', faveColor: '#86B342', strength: 80 } },
-      { data: { source: 'Trainer', target: 'Captain', faveColor: '#86B342', strength: 80 } },
+      
       { data: { source: 'Trainer', target: 'President', faveColor: '#86B342', strength: 80 } },
-      { data: { source: 'Trainer', target: 'Supporters', faveColor: '#86B342', strength: 80 } },
-
-      { data: { source: 'Supporters', target: 'CEO', faveColor: '#939393', strength: 80 } },
-      { data: { source: 'Supporters', target: 'Captain', faveColor: '#939393', strength: 80 } },
-      { data: { source: 'Supporters', target: 'President', faveColor: '#939393', strength: 80 } },
-      { data: { source: 'Supporters', target: 'Trainer', faveColor: '#939393', strength: 80 } },
-
+      { data: { source: 'Trainer', target: 'CEO', faveColor: '#86B342', strength: 80 } },
+      
+      { data: { source: 'CEO', target: 'President', faveColor: '#EDA1ED', strength: 80 } },
+      { data: { source: 'CEO', target: 'Trainer', faveColor: '#EDA1ED', strength: 80 } },
+      
+      { data: { source: 'Supporters', target: 'Supporters', faveColor: '#939393', strength: 80 } },
+      
+      { data: { source: 'Captain', target: 'Captain', faveColor: '#F5A45D', strength: 80 } },
+      
     ]
   },
-
+  
   ready: function(){
     window.cy = this;
-
+    
     // giddy up
   }
 });

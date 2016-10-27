@@ -28,6 +28,7 @@ h3
 	font-family:sans-serif;
 	text-align:center;
 	color:
+	
 }
 
 p
@@ -53,7 +54,43 @@ header
 	margin-top:100px;
 }
 
-/* encyclopedia layout */
+#show_table
+{
+	
+	
+}
+
+ #mynetwork
+    {
+	  margin-top:5.2%;
+      width: 800px;
+      height: 400px;
+	  border-right:2px solid #585858;
+	  background:#FAFAFA;
+      border: 2px solid #0B3B0B;
+	  border-radius:10px;
+	  box-shadow: 7px 7px 5px #888888;
+    }
+
+#logbetween
+{
+	width:100%;
+	height:500px;
+	border:2px solid #0B3B0B;
+	border-radius:10px;
+	background:#FAFAFA;
+	box-shadow:7px 7px 5px #888888;
+}
+	
+#architectures
+{
+	border:2px solid #0B3B0B;
+	border-radius:10px;
+	background:#FAFAFA;
+	box-shadow:7px 7px 5px #888888;	
+}
+	
+	
 div.img {
 	margin-top:100px;
 	margin: 3%;
@@ -71,7 +108,11 @@ div.img img {
     margin: 8px;
 }
 
-/* classes */
+img.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .active {
    /* background-color: #4CAF50; */

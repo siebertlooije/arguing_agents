@@ -47,11 +47,11 @@ function strategie_reason(strategie)
     switch(true)
     {
         case (strategie < 0.33):
-            return "strategie : best player of the club"
+            return "strategy best player of the club"
         case (strategie >= 0.33 && strategie < 0.66):
-            return "strategie : random player of random club"
+            return "strategy  random player of random club"
         case (strategie >= 0.66):
-            return "strategie : baddest player of the club";
+            return "strategy  baddest player of the club";
     }
 }
 

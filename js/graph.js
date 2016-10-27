@@ -24,10 +24,11 @@ function remove_bid(playername,club2index)
   var player_id = check_player_graph(playername)
   for(var index = 0; index != edges_length; index ++)
   {
-        console.log(data.edges.get(2))
+        if(data.edges.get(index) == null)
+            continue;
         if(data.edges.get(index).from == player_id && data.edges.get(index).to == club2index)
         {
-            data.edges.splice(index,1);
+            data.edges.remove(index);
             edges_length++;
         }
   }
@@ -72,9 +73,9 @@ function make_bid(player,club1_index, club2_index, bid, inter_president)
         color = "red"
 
     var player_id = null;
-  if(check_player_graph(player.name) == null)
-  {
-      var dict = {"id": data.nodes.length,"label": player.name, 'color': 'blue'}
+    if(check_player_graph(player.name) == null)
+    {
+      var dict = {"id": data.nodes.length,"label": player.name, 'color': 'lightblue'}
       player_id = data.nodes.length;
       data.nodes.add(dict)
       dict = {"id" : edges_length + 1, "from": player_id, "to": club2_index, "arrows": 'to', "label": "player of", 'color': 'grey', 'length': 400}
@@ -83,14 +84,14 @@ function make_bid(player,club1_index, club2_index, bid, inter_president)
       dict = {"id" : edges_length + 1,"from": club1_index, "to": player_id, "arrows": 'to', "label": "bid :" + bid.toFixed(2), 'color': color, 'length': 400}
       data.edges.add(dict)
       edges_length++
-  }
-  else
-  {
+    }
+    else
+    {
       player_id = check_player_graph(player.name);
       dict = { "id" : edges_length + 1 , "from": club1_index, "to": player_id, "arrows": 'to', "label": "bid :"+ bid.toFixed(2) , 'color': color, 'length': 400}
       data.edges.add(dict)
       edges_length ++
-  }
+}
 
   if(inter_president)
   {
@@ -103,6 +104,13 @@ function make_bid(player,club1_index, club2_index, bid, inter_president)
       dict = {"id" : edges_length + 1, "from": pred_id, "to": player_id, "arrows": 'to', "label": "Stops bid", 'color': 'red', 'length': 400}
       data.edges.add(dict)
       edges_length++
+    for(var length=1; length != data.edges.length - 1; length++)
+    {
+        if(data.edges.get(length) == null)
+            continue;
+        if(data.edges.get(length)["to"] == player_id)
+            data.edges.get(length)["color"] = 'red'
+    }
   }
 
   update_graph()

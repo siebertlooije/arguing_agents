@@ -22,8 +22,9 @@ function round(competition, index_club)
     }
     var club_index = array_player[1];
     var bid = (player.price *(Math.random() * 2 ));
-
-    var inter_president = check_interruption_president()
+    inter_president = false;
+    if(club_index != competition.length - 1)
+        var inter_president = check_interruption_president()
 
     log_bid(player,club.name, competition[club_index].name, bid, inter_president, strategie);
     make_bid(player,index_club, club_index, bid, inter_president);
@@ -47,7 +48,7 @@ function club_strategie(competition, club)
 
 function check_interruption_president()
 {
-    if(Math.random() < 0.05)
+    if(Math.random() < 0.25)
         return true;
     return false;
 }
@@ -58,6 +59,7 @@ function check_bids(club1, index_club, competition)
         return;
     for(var index = 0; index != club1.bids.length; index ++)
     {
+
         if(club1.bids[index]["Bid"] >= club1.bids[index]["Pvalue"])
         {
             var club2index = club1.bids[index]["Club"]
@@ -69,6 +71,8 @@ function check_bids(club1, index_club, competition)
         }
         else
         {
+            if(competition[club1.bids[index]["Club"]].name == "transfer list" || club1.name == "transfer list")
+                return
             log_refuse_bid(club1.name, competition[club1.bids[index]["Club"]].name, club1.bids[index]["Player"], club1.bids[index]["Bid"])
             add_refuse(club1.bids[index]["Player"],club1.bids[index]["Club"],club1.bids[index]["Bid"])
             remove_bid(club1.bids[index]["Player"],club1.bids[index]["Club"])

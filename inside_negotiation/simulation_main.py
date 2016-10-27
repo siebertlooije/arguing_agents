@@ -2,8 +2,11 @@
 
 import random
 import webbrowser
-from create_teams import *
+
+from create_uniform_agents import *
+from graph_representations import *
 from geneticAlgorithm import *
+from results import *
 from plots import *
 
 n_simulations = 25
@@ -18,7 +21,7 @@ def score_keeper(s):
 	for i in s:
 		scores.append(i)
 																																																							
-	tot = 0 																																																																																														
+	tot = 0																																																																																														
 
 	for i in scores:
 		tot += i
@@ -43,8 +46,10 @@ if __name__ == '__main__':
 
 	if answer == "1":
 
-		webbrowser.open("index.html");		
+		webbrowser.open("index.html");
+		
 		ready_set = prepare_set(chromosomes_set,answer)
+		Uniform_graph_representation()
 
 		for i in xrange(0,n_simulations):
 
@@ -68,6 +73,7 @@ if __name__ == '__main__':
 	elif answer == "2":
 
 		webbrowser.open("architecture2.html");
+
 		ready_set = prepare_set(chromosomes_set,answer)
 		
 		for i in xrange(0,n_simulations):
@@ -108,6 +114,7 @@ if __name__ == '__main__':
 	elif answer == "3":
 
 		webbrowser.open("architecture3.html");
+
 		ready_set = prepare_set(chromosomes_set,answer)
 
 		for i in xrange(0,n_simulations):

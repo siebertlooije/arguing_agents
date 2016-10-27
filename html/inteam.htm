@@ -18,9 +18,9 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <![endif]-->	
   </head>
-  <body>
+  <body style="background-image:url(../img/grass3.jpg);background-size:85%;">
       <!-- Static navbar -->
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -31,11 +31,11 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Arguing Agents</a>
+            <a class="navbar-brand" href="../index.html">Arguing Agents</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li> <a href="../index.html #argumentation">Back</a></li>
+              <li> <a href="../index.html">Back</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -44,20 +44,28 @@
 		
 		<div class="container-fluid text-center">
 		<div class="row content">
-			<div class="col-sm-2 sidenav">
+		<h1 style="text-align:center">Visualization within a team argumentation</h1>
+			<div class="col-sm-4 sidenav">
 				<!-- Left sidebar -->
+				<img src="../img/architecture_1.png" id="architectures" style="margin-top:10%" alt="Architecture 1" width="59.8%" height="59.8%">
+				<h2 style="margin-top:10%"> Set 1 </h2>
+				<p style="text-align:center"> All components of the Team exchange information bits equally </p>
+				<hr style="margin-top:16%">
 			</div>
-			<div class="col-sm-8 text-left">
-				<h1 style="text-align:center">Visualization in teams argumentation</h1>
-				<div id="mynetwork"></div>
-					<button type = "button" class="btn btn-success" id="graph" style="margin-left:40%; margin-top:35px" onclick=make_graph()>View graph</button>
-				</div>
-				<hr>
-				<h3></h3>
-				<p></p>
+			<div class="col-sm-4">
+				<img src="../img/architecture_3.png" id="architectures" style="margin-top:10%" alt="Architecture 2" width="60%" height="60%">
+				<h2 style="margin-top:10%"> Set 2 </h2>
+				<p style="text-align:center"> Only President, Trainer and CEO negotiate </p>
+				<hr style="margin-top:21.3%">
+				<h1 style="margin-top:10%"> Agreement Graph </h1>
+				<img src="../img/GA_Graph.jpg" id="architectures" alt="Walton&Krabbe" width="100%" height="100%">
 			</div>
-			<div class="col-sm-2 sidenav">
+			<div class="col-sm-4 sidenav">
 				<!-- Right sidebar -->
+				<img src="../img/architecture_2.png" id="architectures" style="margin-top:10%" alt="Architecture 3" width="60%" height="60%">
+				<h2 style="margin-top:10%"> Set 3 </h2>
+				<p style="text-align:center"> President and Supporters negotiate and Captain, Trainer and CEO participate randomly to the process </p>
+				<hr style="margin-top:8.4%">
 			</div>
 		</div>
 	</div>
@@ -65,28 +73,19 @@
 	<footer class="container-fluid text-center">
 	  <p></p>
 	</footer>
-	
-		<script>
-    function update()
-    {
-      var request = new XMLHttpRequest();
-      request.open('GET', '/state', true);
-      request.onreadystatechange = function(){
-        if (request.readyState == 4) {
-          drawGraph(JSON.parse(request.responeText));
-        }
-      };
-      request.send();
-    }
-   </script>
    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../bootstrap-3.3.7/js/bootstrap.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../javascript/vis.js"></script>
 	<script src="../javascript/kripke.js"></script>
+	<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
+	<script src="../js/architecture3.js"></script>
+    <script src="../js/architecture2.js"></script>
+	<script src="../js/architecture1.js"></script>
 
   </body>
 </html>
